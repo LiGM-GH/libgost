@@ -1,10 +1,10 @@
 # https://just.systems
-local-libpath := "~/.local/share/typst/packages/local"
 libname := "libgost"
-version := "1.0.0"
-libpath := join(local-libpath, libname, version)
-libpath_lib := join(libpath, "lib")
-libpath_template := join(libpath, "template")
+version := "0.1.0"
+local-lib := "~/.local/share/typst/packages/local"
+ll := join(local-lib, libname, version)
+ll_lib := join(ll, "lib")
+ll_template := join(ll, "template")
 
 assetpath := "assets"
 thumbnail_file := join(assetpath, "thumbnail.png")
@@ -28,7 +28,10 @@ watch:
     watchexec -w ./lib -w ./template -w ./typst.toml -w {{thumbnail_file}} just deploy
 
 deploy:
-    cp ./typst.toml {{libpath}}
-    cp ./thumbnail.png {{libpath}}
-    cp -r ./lib/* {{libpath_lib}}
-    cp -r ./template/* {{libpath_template}}
+    if [ -f {{local-lib}} ]; then echo 'Lib exists'; else mkdir -p {{local-lib}}; fi
+    if [ -f {{ll_lib}} ]; then echo 'Lib exists'; else mkdir -p {{ll_lib}}; fi
+    if [ -f {{ll_template}} ]; then echo 'Lib exists'; else mkdir -p {{ll_template}}; fi
+    cp ./typst.toml {{ll}}
+    cp ./assets/thumbnail.png {{ll}}
+    cp -r ./lib/* {{ll_lib}}
+    cp -r ./template/* {{ll_template}}
