@@ -1,13 +1,15 @@
 # https://just.systems
-local-libpath := "~/.local/share/typst/packages/local"
+manifest := "typst.toml"
 libname := "libgost"
 version := "1.0.0"
-libpath := join(local-libpath, libname, version)
-libpath_lib := join(libpath, "lib")
-libpath_template := join(libpath, "template")
 
 assetpath := "assets"
 thumbnail_file := join(assetpath, "thumbnail.png")
+
+local-namespace := "~/.local/share/typst/packages/local"
+local-lib := join(local-namespace, libname, version)
+ll_lib := join(local-lib, "lib")
+ll_template := join(local-lib, "template")
 
 default:
     just --list
@@ -28,7 +30,7 @@ watch:
     watchexec -w ./lib -w ./template -w ./typst.toml -w {{thumbnail_file}} just deploy
 
 deploy:
-    cp ./typst.toml {{libpath}}
-    cp ./thumbnail.png {{libpath}}
-    cp -r ./lib/* {{libpath_lib}}
-    cp -r ./template/* {{libpath_template}}
+    cp {{manifest}} {{local-lib}}
+    cp {{thumbnail_file}} {{local-lib}}
+    cp -r ./lib/* {{ll_lib}}
+    cp -r ./template/* {{ll_template}}

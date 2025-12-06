@@ -13,7 +13,7 @@ A library for reports that follow ГОСТ 7.32-2017
 
 ```typst
 #let appendixes(content)
-#let text-settings(body)
+#let text-settings(font-size: 12pt)
 #let titlepage(
   body,
   teacher: none,
@@ -36,7 +36,12 @@ Include the library:
 
 Then apply text and page settings:
 ```typst
-#show: gost.text-settings
+#show: gost.text-settings()
+```
+
+You can also set font size in the text-settings:
+```typst
+#show: gost.text-settings(font-size: 14pt)
 ```
 
 Now I use green fill to show what should be substituted for the real value.

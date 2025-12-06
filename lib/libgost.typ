@@ -63,7 +63,8 @@
   pagebreak(weak: true)
 }
 
-#let text-settings(body, font-size: 12pt) = {
+#let font-size = 12pt
+#let text-settings-inner(body, font-size: font-size) = {
   set page(paper: "a4", margin: (top: 20mm, left: 30mm, right: 15mm, bottom: 20mm))
   set text(
     font: "Times New Roman",
@@ -121,6 +122,11 @@
   }
 
   body
+}
+
+#let text-settings(font-size: 12pt) = {
+  let inner(body) = text-settings-inner(body, font-size: font-size)
+  inner
 }
 
 #let appendixes(content) = {

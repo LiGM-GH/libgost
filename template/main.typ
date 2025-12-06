@@ -1,5 +1,5 @@
 #import("@local/libgost:1.0.0") as gost
-#show: gost.text-settings
+#show: gost.text-settings()
 
 #let with-blue-box(content) = {
   set box(fill: green)
