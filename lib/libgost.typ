@@ -1,6 +1,5 @@
 #import("cyr_numbering.typ"): cyrnum
 #let is_appendix = state("appendix", false)
-#let font-size = 12pt
 
 #let titlepage(
   body,
@@ -64,7 +63,7 @@
   pagebreak(weak: true)
 }
 
-#let text-settings(body) = {
+#let text-settings(body, font-size: 12pt) = {
   set page(paper: "a4", margin: (top: 20mm, left: 30mm, right: 15mm, bottom: 20mm))
   set text(
     font: "Times New Roman",
