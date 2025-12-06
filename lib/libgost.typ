@@ -63,8 +63,7 @@
   pagebreak(weak: true)
 }
 
-#let font-size = 12pt
-#let text-settings-inner(body, font-size: font-size) = {
+#let text-settings-inner(body, font-size: 12pt) = {
   set page(paper: "a4", margin: (top: 20mm, left: 30mm, right: 15mm, bottom: 20mm))
   set text(
     font: "Times New Roman",
