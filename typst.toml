@@ -1,0 +1,12 @@
+[package]
+name = "libgost"
+version = "1.0.0"
+entrypoint = "lib/libgost.typ"
+authors = ["lipkin.gregory@yandex.ru"]
+license = "MIT"
+description = "Follow GOST 7.32-2017"
+
+[template]
+path = "template"
+entrypoint = "main.typ"
+thumbnail = "thumbnail.png"

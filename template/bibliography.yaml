@@ -1,0 +1,28 @@
+# look https://github.com/typst/hayagriva/blob/main/docs/file-format.md
+
+types-crichton:
+  type: Web
+  title: Type-level Programming in Rust
+  author: Will Crichton
+  date: 2020-04-24
+  url:
+    value: https://willcrichton.net/notes/type-level-programming/
+    date: 2025-11-27
+
+types-cliffle:
+  type: Web
+  title: The Typestate Pattern in Rust
+  author: Cliff L. Biffle
+  date: 2019-06-05
+  url:
+    value: https://cliffle.com/blog/rust-typestate/
+    date: 2025-11-27
+
+sealed-traits:
+  type: Web
+  title: A definitive guide to sealed traits in Rust
+  author: Predrag
+  date: 2023-04-05
+  url:
+    value: https://predr.ag/blog/definitive-guide-to-sealed-traits-in-rust/
+    date: 2025-11-27
