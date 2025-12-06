@@ -1,7 +1,7 @@
 # https://just.systems
 manifest := "typst.toml"
 libname := "libgost"
-version := "1.0.0"
+version := "0.1.1"
 
 assetpath := "assets"
 thumbnail_file := join(assetpath, "thumbnail.png")
@@ -30,6 +30,9 @@ watch:
     watchexec -w ./lib -w ./template -w ./typst.toml -w {{thumbnail_file}} just deploy
 
 deploy:
+    if [ -f {{local-lib}} ]; then echo 'Lib exists'; else mkdir -p {{local-lib}}; fi
+    if [ -f {{local-lib}} ]; then echo 'Lib exists'; else mkdir -p {{ll_lib}}; fi
+    if [ -f {{local-lib}} ]; then echo 'Lib exists'; else mkdir -p {{ll_template}}; fi
     cp {{manifest}} {{local-lib}}
     cp {{thumbnail_file}} {{local-lib}}
     cp -r ./lib/* {{ll_lib}}
