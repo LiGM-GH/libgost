@@ -1,11 +1,10 @@
 [package]
 name = "libgost"
-version = "0.1.0"
+version = "1.0.0"
 entrypoint = "lib/libgost.typ"
 authors = ["lipkin.gregory@yandex.ru"]
 license = "MIT"
 description = "Follow GOST 7.32-2017"
-categories = ["thesis","paper"]
 
 [template]
 path = "template"
