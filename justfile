@@ -1,7 +1,7 @@
 # https://just.systems
 manifest := "typst.toml"
 libname := "libgost"
-version := "0.1.1"
+version := "0.1.2"
 
 assetpath := "assets"
 thumbnail_file := join(assetpath, "thumbnail.png")

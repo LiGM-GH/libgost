@@ -63,7 +63,7 @@
   pagebreak(weak: true)
 }
 
-#let text-settings-inner(body, font-size: 12pt) = {
+#let text-settings-inner(body, font-size: 12pt, pagebreaks: auto) = {
   set page(paper: "a4", margin: (top: 20mm, left: 30mm, right: 15mm, bottom: 20mm))
   set text(
     font: "Times New Roman",
@@ -83,10 +83,16 @@
     v(0.5em)
   }
   show heading.where(numbering: cyrnum): set align(center)
-  show heading.where(level: 1): it => {
-    pagebreak()
-    it
-  }
+  show heading.where(level: 1): it => [
+    #if pagebreaks == auto {
+      pagebreak(weak: true)
+    } else if pagebreaks == true {
+      pagebreak()
+    } else {
+      assert(pagebreaks == none or pagebreaks == false, message: "Pagebreaks must be either auto, or boolean, or none")
+    }
+    #it
+  ]
 
   show heading: set text(size: font-size)
 
@@ -123,8 +129,8 @@
   body
 }
 
-#let text-settings(font-size: 12pt) = {
-  let inner(body) = text-settings-inner(body, font-size: font-size)
+#let text-settings(pagebreaks: auto, font-size: 12pt) = {
+  let inner(body) = text-settings-inner(body, font-size: font-size, pagebreaks: pagebreaks)
   inner
 }
 
