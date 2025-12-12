@@ -56,8 +56,12 @@ update-version NEW_VERSION:
             --expression $"s/($version)/{{ NEW_VERSION }}/"
     ) }
 
+version:
+    {{version}}
+
 release VERSION:
     just update-version {{ VERSION }}
+    git add $(nu -c 'git status --porcelain --no-renames | lines | split column " " --collapse-empty | where column1 =~ "M" | get column2 | to text | fzf --multi')
     git commit
     just deploy
     git tag {{ VERSION }}
