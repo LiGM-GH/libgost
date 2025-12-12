@@ -55,3 +55,10 @@ update-version NEW_VERSION:
             --in-place
             --expression $"s/($version)/{{ NEW_VERSION }}/"
     ) }
+
+release VERSION:
+    just update-version {{ VERSION }}
+    git commit
+    just deploy
+    git tag {{ VERSION }}
+    gh release create "v{{ VERSION }}"
