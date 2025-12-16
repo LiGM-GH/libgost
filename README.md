@@ -30,7 +30,7 @@ A library for reports that follow ГОСТ 7.32-2017
 Include the library:
 
 ```typst
-#include("@local/libgost:1.0.0")
+#include("@local/libgost:0.1.4")
 ```
 
 Then apply text and page settings:
