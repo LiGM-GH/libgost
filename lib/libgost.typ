@@ -1,59 +1,114 @@
-#import("cyr_numbering.typ"): cyrnum
+#import "cyr_numbering.typ": cyrnum
 #let is_appendix = state("appendix", false)
 
 #let titlepage(
   body,
-  signer_1: none,
-  signer_2: none,
   city: "Москва",
   year: auto,
-  signer_1_honorifics: none,
-  signer_2_honorifics: none,
+  main-face: (signer: none, label: none),
+  signers: ((signer: none, label: none),),
+  signers-on-title-page: auto,
 ) = {
   set page(numbering: none)
   align(alignment.center, body)
 
-  let bottom_1 = if signer_1_honorifics != none { signer_1_honorifics }
-  let bottom_2 = if signer_2_honorifics != none { signer_2_honorifics }
   if year == auto {
     year = datetime.today().year()
   }
 
   let city-and-year = [#city#if year != none [, #year]]
 
-  if signer_1 != none and signer_2 != none {
-    align(alignment.bottom + alignment.center, [
+  let split-performers = {
+    if signers-on-title-page == true { false } else if (
+      signers-on-title-page == false
+    ) { true } else if signers-on-title-page == auto and signers.len() >= 2 {
+      true
+    } else { false }
+  }
+
+  let result_table = if split-performers {
+    signers
+      .map(signer-data => {
+        let signer = signer-data.signer
+        let label = signer-data.label
+        let work = signer-data.work
+
+        if label == none and signer == none and work == none {
+          return none
+        }
+
+        assert(
+          label != none and signer != none and work != none,
+          message: "If even one of (label,signer,work) pair is none, it's a problem with layout. Use empty string instead.",
+        )
+
+        let low-text = 0.7em
+        (
+          label,
+          repeat("_"),
+          signer,
+          "",
+          text(low-text, align(top, "подпись, дата")),
+          text(low-text, align(top, "(" + lower(work) + ")")),
+        )
+      })
+      .flatten()
+  } else {
+    signers
+      .map(pair => {
+        let signer = pair.signer
+        let label = pair.label
+
+        if label == none and signer == none {
+          return none
+        }
+
+        assert(
+          label != none and signer != none,
+          message: "If exactly one of (label,signer) pair is none, it's a problem with layout. Use empty string instead.",
+        )
+
+        (label, repeat("_"), signer)
+      })
+      .flatten()
+  }
+
+  let table_alignment = (left, center, left)
+  let table_columns = (1fr, 1fr, auto)
+  if split-performers [
+    #align(alignment.bottom + alignment.center, [
       #table(
         stroke: none,
-        align: (right, center, left),
-        columns: (1fr, 1fr, 1fr),
+        align: table_alignment,
+        columns: table_columns,
         fill: none,
-        bottom_1, repeat("_"), signer_1,
-        bottom_2, repeat("_"), signer_2,
+        main-face.label,
+        repeat("_"),
+        main-face.signer,
       )
 
       #city-and-year
     ])
-  } else if signer_2 != none {
+    #pagebreak(weak: true)
+    #heading(numbering: none)[СПИСОК ИСПОЛНИТЕЛЕЙ]
+    #table(
+      stroke: none,
+      align: table_alignment,
+      columns: table_columns,
+      fill: none,
+      ..result_table
+    )
+  ] else {
     align(alignment.bottom + alignment.center, [
       #table(
         stroke: none,
-        align: (right, center, left),
-        columns: (1fr, 1fr, 1fr),
+        align: table_alignment,
+        columns: table_columns,
         fill: none,
-        bottom_2, repeat("_"), signer_2,
-      )
-
-      #city-and-year
-    ])
-  } else if signer_1 != none {
-    align(alignment.bottom + alignment.center, [
-      #table(
-        stroke: none,
-        align: (right, center, left),
-        columns: (1fr, 1fr, 1fr),
-        fill: none,
-        bottom_1, repeat("_"), signer_1,
+        main-face.label,
+        repeat("_"),
+        main-face.signer,
+        ..result_table
       )
 
       #city-and-year
@@ -64,7 +119,12 @@
 }
 
 #let text-settings-inner(body, font-size: 12pt, pagebreaks: auto) = {
-  set page(paper: "a4", margin: (top: 20mm, left: 30mm, right: 15mm, bottom: 20mm))
+  set page(paper: "a4", margin: (
+    top: 20mm,
+    left: 30mm,
+    right: 15mm,
+    bottom: 20mm,
+  ))
   set text(
     font: "Times New Roman",
     size: font-size,
@@ -72,7 +132,11 @@
     hyphenate: false,
     spacing: 100%,
   )
-  set par(first-line-indent: (amount: 1.25cm, all: true), justify: true, spacing: 1.5em)
+  set par(
+    first-line-indent: (amount: 1.25cm, all: true),
+    justify: true,
+    spacing: 1.5em,
+  )
 
   set align(alignment.left + alignment.top)
   set page(numbering: "1")
@@ -89,7 +153,10 @@
     } else if pagebreaks == true {
       pagebreak()
     } else {
-      assert(pagebreaks == none or pagebreaks == false, message: "Pagebreaks must be either auto, or boolean, or none")
+      assert(
+        pagebreaks == none or pagebreaks == false,
+        message: "Pagebreaks must be either auto, or boolean, or none",
+      )
     }
     #it
   ]
@@ -98,12 +165,22 @@
 
   let is_appendix = state("appendix", false)
 
-  set bibliography(style: "gost-r-705-2008-numeric", title: "Список использованных источников")
+  set bibliography(
+    style: "gost-r-705-2008-numeric",
+    title: "Список использованных источников",
+  )
   set outline(indent: 2em)
   show outline.entry: it => {
     show linebreak: [ ]
     if is_appendix.at(it.element.location()) {
-      link(it.element.location(), it.indented(none, [Приложение #numbering(cyrnum, ..counter(heading).at(it.element.location())) #it.element.body] + sym.space + box(width: 1fr, it.fill) + sym.space + it.page()))
+      link(it.element.location(), it.indented(
+        none,
+        [Приложение #numbering(cyrnum, ..counter(heading).at(it.element.location())) #it.element.body]
+          + sym.space
+          + box(width: 1fr, it.fill)
+          + sym.space
+          + it.page(),
+      ))
     } else {
       it
     }
@@ -130,7 +207,11 @@
 }
 
 #let text-settings(pagebreaks: auto, font-size: 12pt) = {
-  let inner(body) = text-settings-inner(body, font-size: font-size, pagebreaks: pagebreaks)
+  let inner(body) = text-settings-inner(
+    body,
+    font-size: font-size,
+    pagebreaks: pagebreaks,
+  )
   inner
 }
 
@@ -160,13 +241,19 @@
   set figure(numbering: it => {
     let current-heading = counter(heading).get().first()
 
-    (numbering(cyrnum, current-heading), numbering("1.1", counter(figure).get())).join(".")
+    (
+      numbering(cyrnum, current-heading),
+      numbering("1.1", counter(figure).get()),
+    ).join(".")
   })
 
   set math.equation(numbering: it => {
     let current-heading = counter(heading).get().first()
 
-    (numbering(cyrnum, current-heading), numbering("1.1", ..counter(math.equation).get())).join(".")
+    (
+      numbering(cyrnum, current-heading),
+      numbering("1.1", ..counter(math.equation).get()),
+    ).join(".")
   })
 
   content
