@@ -5,7 +5,9 @@ libname := "libgost"
 version := "0.1.2"
 assetpath := "assets"
 thumbnail_file := join(assetpath, "thumbnail.png")
-local-namespace := "~/.local/share/typst/packages/local"
+os := if os_family() == "windows" { "windows" } else if os() == "macos" { "macos" } else { "unix" }
+share := if os == "windows" { env("APPDATA") } else if os == "macos" { "~/Library/Application Support" } else if os == "unix" { "~/.local/share" } else { error("OS must be either windows, or unix, or macos") }
+local-namespace := join(share, "typst", "packages", "local")
 local-lib := join(local-namespace, libname, version)
 ll_lib := join(local-lib, "lib")
 ll_template := join(local-lib, "template")
@@ -29,13 +31,13 @@ watch:
     watchexec -w ./lib -w ./template -w ./typst.toml -w {{ thumbnail_file }} just deploy
 
 deploy:
-    if [ -f {{ local-lib }} ]; then echo 'Lib exists'; else mkdir -p {{ local-lib }}; fi
-    if [ -f {{ local-lib }} ]; then echo 'Lib exists'; else mkdir -p {{ ll_lib }}; fi
-    if [ -f {{ local-lib }} ]; then echo 'Lib exists'; else mkdir -p {{ ll_template }}; fi
-    cp {{ manifest }} {{ local-lib }}
-    cp {{ thumbnail_file }} {{ local-lib }}
-    cp -r ./lib/* {{ ll_lib }}
-    cp -r ./template/* {{ ll_template }}
+    @if [ -e {{ local-lib }}   ]; then echo '{{ local-lib }} \t\t {{ BG_GREEN }}exists{{ NORMAL }}'  ; else mkdir -p {{ local-lib }}  ; fi
+    @if [ -e {{ ll_lib }}      ]; then echo '{{ ll_lib }} \t\t {{ BG_GREEN }}exists{{ NORMAL }}'     ; else mkdir -p {{ ll_lib }}     ; fi
+    @if [ -e {{ ll_template }} ]; then echo '{{ ll_template }} \t\t {{ BG_GREEN }}exists{{ NORMAL }}'; else mkdir -p {{ ll_template }}; fi
+    @if cp {{ manifest }} {{ local-lib }}       ; then echo "{{ BG_GREEN }}Success copying {{ manifest }} {{ NORMAL }}"       ; else echo "{{ BG_RED }}ERROR copying {{ manifest }} {{ NORMAL }}"      ; fi
+    @if cp {{ thumbnail_file }} {{ local-lib }} ; then echo "{{ BG_GREEN }}Success copying {{ thumbnail_file }} {{ NORMAL }}" ; else echo "{{ BG_RED }}ERROR copying {{ thumbnail_file }} {{ NORMAL }}"; fi
+    @if cp -r ./lib/* {{ ll_lib }}              ; then echo "{{ BG_GREEN }}Success copying ./lib/* {{ NORMAL }}"              ; else echo "{{ BG_RED }}ERROR copying ./lib/* {{ NORMAL }}"             ; fi
+    @if cp -r ./template/* {{ ll_template }}    ; then echo "{{ BG_GREEN }}Success copying ./template/* {{ NORMAL }}"         ; else echo "{{ BG_RED }}ERROR copying ./template/* {{ NORMAL }}"        ; fi
 
 update-version NEW_VERSION:
     #!/usr/bin/env -S nu --stdin
@@ -57,7 +59,7 @@ update-version NEW_VERSION:
     ) }
 
 version:
-    {{version}}
+    {{ version }}
 
 release VERSION:
     just update-version {{ VERSION }}
