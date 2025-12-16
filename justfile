@@ -2,7 +2,7 @@
 
 manifest := "typst.toml"
 libname := "libgost"
-version := "0.1.3"
+version := "0.1.4"
 assetpath := "assets"
 thumbnail_png := join(assetpath, "thumbnail.png")
 vision_pdf := "vision.pdf"

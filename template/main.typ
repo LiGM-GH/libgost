@@ -1,4 +1,4 @@
-#import("@local/libgost:0.1.3") as gost
+#import("@local/libgost:0.1.4") as gost
 #show: gost.text-settings()
 
 #let with-green-box(content) = {

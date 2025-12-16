@@ -1,6 +1,6 @@
 [package]
 name = "libgost"
-version = "0.1.3"
+version = "0.1.4"
 entrypoint = "lib/libgost.typ"
 authors = ["lipkin.gregory@yandex.ru"]
 license = "MIT"
