@@ -60,7 +60,7 @@ update-version NEW_VERSION:
     ) }
 
 version:
-    {{ version }}
+    echo {{ version }}
 
 release VERSION:
     just update-version {{ VERSION }}
