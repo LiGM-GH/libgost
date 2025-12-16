@@ -16,12 +16,11 @@ A library for reports that follow ГОСТ 7.32-2017
 #let text-settings(pagebreaks: auto, font-size: 12pt)
 #let titlepage(
   body,
-  signer_1: none,
-  signer_2: none,
   city: "Москва",
   year: auto,
-  signer_1_honorifics: none,
-  signer_2_honorifics: none,
+  main-face: (signer: none, label: none),
+  signers: ((signer: none, label: none),),
+  signers-on-title-page: auto,
 )
 #let is_appendix = state("appendix", false)
 ```
