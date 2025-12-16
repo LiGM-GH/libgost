@@ -71,6 +71,7 @@ release VERSION:
     just update-png
     xdg-open {{ vision_pdf }}
     xdg-open {{ thumbnail_png }}
+    just release-to-github {{VERSION}}
 
 [confirm("Is everything checked? Are you sure this is going to GitHub?")]
 release-to-github VERSION:
