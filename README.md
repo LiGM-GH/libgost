@@ -13,15 +13,15 @@ A library for reports that follow ГОСТ 7.32-2017
 
 ```typst
 #let appendixes(content)
-#let text-settings(font-size: 12pt)
+#let text-settings(pagebreaks: auto, font-size: 12pt)
 #let titlepage(
   body,
-  teacher: none,
-  student: none,
+  signer_1: none,
+  signer_2: none,
   city: "Москва",
   year: auto,
-  teacher_honorifics: none,
-  student_honorifics: none,
+  signer_1_honorifics: none,
+  signer_2_honorifics: none,
 )
 #let is_appendix = state("appendix", false)
 ```

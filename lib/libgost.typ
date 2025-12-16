@@ -3,57 +3,57 @@
 
 #let titlepage(
   body,
-  teacher: none,
-  student: none,
+  signer_1: none,
+  signer_2: none,
   city: "Москва",
   year: auto,
-  teacher_honorifics: none,
-  student_honorifics: none,
+  signer_1_honorifics: none,
+  signer_2_honorifics: none,
 ) = {
   set page(numbering: none)
   align(alignment.center, body)
 
-  let honorifix = if teacher_honorifics != none { teacher_honorifics }
-  let shonorifix = if student_honorifics != none { student_honorifics }
+  let bottom_1 = if signer_1_honorifics != none { signer_1_honorifics }
+  let bottom_2 = if signer_2_honorifics != none { signer_2_honorifics }
   if year == auto {
     year = datetime.today().year()
   }
 
   let city-and-year = [#city#if year != none [, #year]]
 
-  if teacher != none and student != none {
+  if signer_1 != none and signer_2 != none {
     align(alignment.bottom + alignment.center, [
       #table(
         stroke: none,
         align: (right, center, left),
         columns: (1fr, 1fr, 1fr),
         fill: none,
-        "Преподаватель: " + honorifix, repeat("_"), teacher,
-        "Исполнитель: " + shonorifix,  repeat("_"), student,
+        bottom_1, repeat("_"), signer_1,
+        bottom_2, repeat("_"), signer_2,
       )
 
       #city-and-year
     ])
-  } else if student != none {
+  } else if signer_2 != none {
     align(alignment.bottom + alignment.center, [
       #table(
         stroke: none,
         align: (right, center, left),
         columns: (1fr, 1fr, 1fr),
         fill: none,
-        "Исполнитель: " + shonorifix, repeat("_"), student,
+        bottom_2, repeat("_"), signer_2,
       )
 
       #city-and-year
     ])
-  } else if teacher != none {
+  } else if signer_1 != none {
     align(alignment.bottom + alignment.center, [
       #table(
         stroke: none,
         align: (right, center, left),
         columns: (1fr, 1fr, 1fr),
         fill: none,
-        "Преподаватель: " + honorifix, repeat("_"), teacher,
+        bottom_1, repeat("_"), signer_1,
       )
 
       #city-and-year

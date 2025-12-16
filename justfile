@@ -2,7 +2,7 @@
 
 manifest := "typst.toml"
 libname := "libgost"
-version := "0.1.2"
+version := "0.1.3"
 assetpath := "assets"
 thumbnail_file := join(assetpath, "thumbnail.png")
 os := if os_family() == "windows" { "windows" } else if os() == "macos" { "macos" } else { "unix" }

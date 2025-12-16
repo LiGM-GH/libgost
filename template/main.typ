@@ -1,12 +1,12 @@
-#import("@local/libgost:0.1.2") as gost
+#import("@local/libgost:0.1.3") as gost
 #show: gost.text-settings()
 
-#let with-blue-box(content) = {
+#let with-green-box(content) = {
   set box(fill: green)
   content
 }
 
-#with-blue-box(gost.titlepage(teacher: box("Name"), student: box("Other Name"), student_honorifics: box("bachelor"), teacher_honorifics: box("d.t.s, prof."), city: box("Москва"), year: box("2025"))[
+#with-green-box(gost.titlepage(signer_1: box("Name"), signer_2: box("Other Name"), signer_2_honorifics: box("Студент: бакалавр"), signer_1_honorifics: box("Преподаватель: д.т.н, проф."), city: box("Москва"), year: box("2025"))[
   Министерство образования и науки Российской Федерации \
   #box[Федеральное государственное автономное
   образовательное учреждение высшего образования] \
